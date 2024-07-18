@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('client.home');
-// });
-
 Route::get('/',[PostController::class, 'home']);
 Route::get('post/{id}', [PostController::class, 'post_Detail'])->name('post.detail');
 Route::get('category/{id}', [PostController::class, 'post_Category'])->name('category');
