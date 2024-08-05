@@ -9,6 +9,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class PostSeeder extends Seeder
 {
@@ -26,13 +27,15 @@ class PostSeeder extends Seeder
         Tag::factory(15)->create();
         
         for($i = 0; $i < 6; $i++){
+            $title = fake()->text('50');
             Post::query()->create([
                 'category_id'=> rand(1, 4),
                 'author_id'=> rand(1, 2),
-                'title' => fake()->text('50'),
+                'title' => $title,
+                'slug' => Str::slug($title) . '-' . Str::random(8),
+                'sku' => Str::random(8) . $i,
                 'excerpt' => fake()->text('50'),
                 'img_thumbnail' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS31qZj9VmsHL0-dTRbu_uAXHl5sD-vqVl7lg&s',
-                'img_cover' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh9EDwF1g7TqepRAVYJezAtbfNjV5OV9-MZA&s',
             ]);
         }
 

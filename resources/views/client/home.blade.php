@@ -60,26 +60,18 @@
                 <div class="row card-body">
                     <div class="col-md-4 mb-4 mb-md-0">
                         <div class="post-slider slider-sm">
-                            @php
-                                $url_thumbnail = $item->img_thumbnail;
-                                $url_cover = $item->img_cover;
-
-                                if (!\Str::contains($url_thumbnail, $url_cover, 'http')) {
-                                    $url = Storage::url($url_thumbnail, $url_cover);
-                                }
-                            @endphp
-                            <img src="{{ $url_thumbnail }}" class="card-img" alt="post-thumb"
-                                style="height:200px; object-fit: cover;">
-                            <img src="{{ $url_cover }}" class="card-img" alt="post-thumb"
-                                style="height:200px; object-fit: cover;">
+                            @if ($item->img_thumbnail && \Storage::exists($item->img_thumbnail))
+                                <img class="card-img" alt="post-thumb" style="height:200px; object-fit: cover;"
+                                    src="{{ \Storage::url($item->img_thumbnail) }}" alt="">
+                            @endif
                         </div>
                     </div>
                     <div class="col-md-8">
                         <h3 class="h4 mb-3"><a class="post-title"
-                                href="{{ route('post.detail', $item->id) }}">{{ $item->title }}</a></h3>
+                                href="{{ route('post.detail', $item->slug) }}">{{ $item->title }}</a></h3>
                         <ul class="card-meta list-inline">
                             <li class="list-inline-item">
-                                <a href="author-single.html" class="card-meta-author">
+                                <a href="#" class="card-meta-author">
                                     @php
                                         $url_avatar = $item->author->avatar;
 
@@ -91,6 +83,9 @@
                                     <img src="{{ $url_avatar }}">
                                     <span>{{ $item->author->name }}</span>
                                 </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <i class="ti-eye"></i>{{ $item->view_count }}
                             </li>
                             <li class="list-inline-item">
                                 <i class="ti-calendar"></i>{{ $item->created_at }}
@@ -106,7 +101,7 @@
                             </li>
                         </ul>
                         <p>{{ \Str::limit($item->excerpt, 190) }}</p>
-                        <a href="{{ route('post.detail', $item->id) }}" class="btn btn-outline-primary">ĐỌC THÊM</a>
+                        <a href="{{ route('post.detail', $item->slug) }}" class="btn btn-outline-primary">ĐỌC THÊM</a>
                     </div>
                 </div>
             </article>
@@ -116,58 +111,14 @@
     </div>
 
     <aside class="col-lg-4 sidebar-home">
-        <!-- Search -->
-        <div class="widget">
-            <h4 class="widget-title"><span>Search</span></h4>
-            <form action="{{ route('search') }}" method="GET" class="widget-search">
-                <input class="mb-3" id="search-query" name="search" type="search" placeholder="Tìm kiếm">
-                <i class="ti-search"></i>
-                <button type="submit" class="btn btn-primary btn-block">Tìm kiếm</button>
-            </form>
-        </div>
 
-
-        <div class="widget">
-            <h4 class="widget-title">Thịnh hành</h4>
-
-            <!-- post-item -->
-            <article class="widget-card">
-                <div class="d-flex">
-                    <img class="card-img-sm" src="images/post/post-10.jpg">
-                    <div class="ml-3">
-                        <h5><a class="post-title" href="post/elements/">Elements That You Can Use In This
-                                Template.</a></h5>
-                        <ul class="card-meta list-inline mb-0">
-                            <li class="list-inline-item mb-0">
-                                <i class="ti-calendar"></i>15 jan, 2020
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </article>
-        </div>
-
-        <div class="widget">
-            <h4 class="widget-title">Đọc nhiều</h4>
-
-            <!-- post-item -->
-            <article class="widget-card">
-                <div class="d-flex">
-                    <img class="card-img-sm" src="images/post/post-10.jpg">
-                    <div class="ml-3">
-                        <h5><a class="post-title" href="post/elements/">Elements That You Can Use In This
-                                Template.</a></h5>
-                        <ul class="card-meta list-inline mb-0">
-                            <li class="list-inline-item mb-0">
-                                <i class="ti-calendar"></i>15 jan, 2020
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </article>
-        </div>
+        @include('client.components.convenientSearch')
 
     </aside>
 
+    
     @include('client.components.convenient')
+
+    {{-- CÁCH 2 --}}
+    {{-- @include('client.components.convenient', ['data' => [[$postNew], [$postTrending], [$postViewOne]]]) --}}
 @endsection

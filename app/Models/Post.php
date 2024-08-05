@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Post extends Model
 {
@@ -13,14 +15,14 @@ class Post extends Model
     'category_id',
     'author_id',
     'title',
+    'slug',
+    'sku',
     'excerpt',
     'img_thumbnail',
-    'img_cover',
     'content',
     'is_active',
     'is_trending',
     'view_count',
-    'status',
     ];
 
     protected $casts = [
@@ -41,4 +43,20 @@ class Post extends Model
     public function tags(){
         return $this->belongsToMany(Tag::class);
     }
+
+    protected function createdAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Carbon::parse($value)->format('d/m/Y H:i'),
+        );
+    }
+
+    protected function updatedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Carbon::parse($value)->format('d/m/Y H:i'),
+        );
+    }
+
+    
 }

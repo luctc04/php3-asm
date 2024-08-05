@@ -13,21 +13,12 @@
                 <div class="col-lg-6 col-sm-6">
                     <article class="card mb-4">
                         <div class="post-slider slider-sm">
-                            @php
-                                $url_thumbnail = $item->img_thumbnail;
-                                $url_cover = $item->img_cover;
-
-                                if (!\Str::contains($url_thumbnail, $url_cover, 'http')) {
-                                    $url = Storage::url($url_thumbnail, $url_cover);
-                                }
-                            @endphp
-                            <img src="{{ $url_thumbnail }}" class="card-img-top" alt="post-thumb">
-                            <img src="{{ $url_cover }}" class="card-img-top" alt="post-thumb">
+                            <img src="{{ \Storage::url($item->img_thumbnail) }}" class="card-img-top" alt="post-thumb">
                         </div>
 
                         <div class="card-body">
                             <h3 class="h4 mb-3"><a class="post-title"
-                                    href="{{ route('post.detail', $item->id) }}">{{ $item->title }}</a></h3>
+                                    href="{{ route('post.detail', $item->slug) }}">{{ $item->title }}</a></h3>
                             <ul class="card-meta list-inline">
                                 <li class="list-inline-item">
                                     <a href="#" class="card-meta-author">
@@ -56,7 +47,7 @@
                                 </li>
                             </ul>
                             <p>{{ \Str::limit($item->excerpt, 190) }}</p>
-                            <a href="{{ route('post.detail', $item->id) }}" class="btn btn-outline-primary">ĐỌC THÊM</a>
+                            <a href="{{ route('post.detail', $item->slug) }}" class="btn btn-outline-primary">ĐỌC THÊM</a>
                         </div>
                     </article>
                 </div>
@@ -71,21 +62,21 @@
         <div class="widget widget-categories">
             <h4 class="widget-title"><span>Danh Mục</span></h4>
             <ul class="list-unstyled widget-list">
-                @foreach ($category2 as $item )
-                <li><a href="{{ url('/category', $item->id)}}" class="d-flex">{{ $item->name }}<small class="ml-auto">( {{ $item->ct_quantity }} )</small></a></li>
-                {{-- <li><a href="tags.html" class="d-flex">Creativity <small class="ml-auto">(4)</small></a></li> --}}
+                @foreach ($category2 as $item)
+                    <li><a href="{{ url('/category', $item->slug) }}" class="d-flex">{{ $item->name }}<small
+                                class="ml-auto">( {{ $item->ct_quantity }} )</small></a></li>
                 @endforeach
             </ul>
         </div><!-- tags -->
         <div class="widget">
             <h4 class="widget-title"><span>Tags</span></h4>
             <ul class="list-inline widget-list-inline widget-card">
-                {{-- <li class="list-inline-item"><a href="tags.html">City</a></li>
-                <li class="list-inline-item"><a href="tags.html">Color</a></li> --}}
+                @foreach ($tags as $item)
+                    <li class="list-inline-item"><a href="{{ url('/tag', $item->id) }}">{{ $item->name }}</a></li>
+                @endforeach
             </ul>
         </div>
     </aside>
 
     @include('client.components.convenient')
-
 @endsection

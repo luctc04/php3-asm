@@ -8,6 +8,7 @@
 -->
 
 <html lang="en-us">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -21,6 +22,9 @@
 
     <!-- theme meta -->
     <meta name="theme-name" content="reader" />
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @include('client.layouts.partials.css')
 
@@ -178,7 +182,7 @@
         <div class="container">
             <div class="row justify-content-center">
 
-              @yield('content')
+                @yield('content')
 
             </div>
         </div>
